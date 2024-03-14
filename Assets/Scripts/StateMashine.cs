@@ -1,9 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.IO.LowLevel.Unsafe;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 
 public class StateMachine
@@ -17,23 +13,20 @@ public class StateMachine
     private Joystick _joystick;
     private Camera _camera;
     private Transform _transform;
-    private Transform _targetPoint;
 
-    public StateMachine(CurvePath curvePath, Canvas canvas, Joystick joystick, Camera camera, Transform transform, Transform targetPoint)
+    public StateMachine(CurvePath curvePath, Canvas canvas, Joystick joystick, Camera camera)
     {
         _curvePath = curvePath;
         _canvas = canvas;
         _joystick = joystick;
         _camera = camera;
-        _transform = transform;
-        _targetPoint = targetPoint;
 
         _states = new Dictionary<Type, State>()
         {
-            [typeof(IdleState)] = new IdleState(this, _joystick, _canvas),
-            [typeof(ZoomState)] = new ZoomState(this, _joystick, _canvas, _camera, _transform, _targetPoint),
+            [typeof(IdleState)] = new IdleState(this, _joystick, _canvas, _curvePath),
+            [typeof(ZoomState)] = new ZoomState(this, _joystick, _canvas, _camera, _curvePath),
+            [typeof(MoveState)] = new MoveState(this, _joystick, _canvas, _curvePath),
         };
-        _targetPoint = targetPoint;
     }
 
     public void EnterIn<TState>() where TState : State

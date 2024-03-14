@@ -8,7 +8,7 @@ public class Trajectory : MonoBehaviour
 
     private void Update()
     {
-        this.transform.position = _targetObject.position;
-        this.transform.rotation = _targetObject.rotation;
+        //this.transform.position = _targetObject.position;
+        //this.transform.rotation = _targetObject.rotation;
     }
 }

@@ -9,27 +9,27 @@ public class ZoomState : State
 
     private Canvas _canvas;
     private Camera _camera;
-    private Transform _transform;
     private Joystick _joystick;
-    private Transform _targetPoint;
+    private CurvePath _curvePath;
+
+    private Transform _trajectory;
 
     private float _dirX;
     private float _dirY;
-    private float _range = 2.0f;
 
-    public ZoomState(StateMachine stateMachine, Joystick joystick, Canvas canvas, Camera camera, Transform transform, Transform targetPoint)
+    public ZoomState(StateMachine stateMachine, Joystick joystick, Canvas canvas, Camera camera, CurvePath curvePath)
     {
         _stateMachine = stateMachine;
         _canvas = canvas;
         _camera = camera;
-        _transform = transform;
         _joystick = joystick;
-        _targetPoint = targetPoint;
+        _curvePath = curvePath;
+        _trajectory = _curvePath.Trajectory;
     }
 
     public void Enter()
     {
-
+        
     }
 
     public void Exit()
@@ -50,8 +50,9 @@ public class ZoomState : State
 
     public void FixedUpdateState()
     {
-        DeterminingRange();
-        TrajectoryRotation();
+        DeterminingRange(); //переустановка целевой позиции
+        _curvePath.HightPointPosition(); //установка позиции верхних пределов 
+        TrajectoryRotation(); //пращение траектории
     }
 
     public void OnMouseEnter()
@@ -76,7 +77,7 @@ public class ZoomState : State
 
     public void OnMouseUp()
     {
-        _stateMachine.EnterIn<IdleState>();
+        HowLongExitRange();
     }
 
     private void TrajectoryRotation()
@@ -84,20 +85,31 @@ public class ZoomState : State
         _dirX = _joystick.Horizontal;
         _dirY = _joystick.Vertical;
 
-        //Debug.Log(_joystick.);
         Vector3 direction = new Vector3(-_dirX, 0, -_dirY);
         if (direction != Vector3.zero)
         {
             Quaternion rotation = Quaternion.LookRotation(direction);
-            _transform.rotation = Quaternion.Lerp(_transform.rotation, rotation, 0.5f);
+            _trajectory.rotation = Quaternion.Lerp(_trajectory.rotation, rotation, 0.5f);
         }
     }
+
+    private void HowLongExitRange()
+    {
+        _dirX = _joystick.Horizontal;
+        _dirY = _joystick.Vertical;
+        if(Mathf.Clamp01(new Vector2(_dirX, _dirY).magnitude) >= 0.2f && _curvePath.IsReadyToMove == true)
+        {
+            _stateMachine.EnterIn<MoveState>();
+        }
+        else
+            _stateMachine.EnterIn<IdleState>();
+        _canvas.enabled = false;
+    }
+
     private void DeterminingRange()
     {
         _dirX = _joystick.Horizontal;
         _dirY = _joystick.Vertical;
-        float mag = Mathf.Clamp01(new Vector2(_dirX, _dirY).magnitude);
-
-        _targetPoint.localPosition = new Vector3(0, 0, _range * mag);
+        _curvePath.SetNewTargetPosition(Mathf.Clamp01(new Vector2(_dirX, _dirY).magnitude));
     }
 }

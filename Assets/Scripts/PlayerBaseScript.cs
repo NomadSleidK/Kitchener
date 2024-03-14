@@ -6,17 +6,16 @@ public class PlayerScript : MonoBehaviour
 {
     private StateMachine _stateMachine;
     private CurvePath _curvePath;
+
     [SerializeField] private Camera _camera;
     [SerializeField] private Canvas _canvas;
     [SerializeField] private Joystick _joystick;
-    [SerializeField] private Transform _targetPoint;
-
 
     private void Start() 
     {
         _canvas.enabled = false;
         _curvePath = GetComponent<CurvePath>();
-        _stateMachine = new StateMachine(_curvePath, _canvas, _joystick, _camera, this.gameObject.transform, _targetPoint);
+        _stateMachine = new StateMachine(_curvePath, _canvas, _joystick, _camera);
         _stateMachine.EnterIn<IdleState>();
     }
 
@@ -48,7 +47,6 @@ public class PlayerScript : MonoBehaviour
     private void OnMouseDown()
     {
         _stateMachine.OnMouseDown();
-
     }
 
     private void OnMouseUp()

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IdleState : State
+public class MoveState : State
 {
     protected readonly StateMachine _stateMachine;
 
@@ -10,7 +10,7 @@ public class IdleState : State
     private Canvas _canvas;
     private CurvePath _curvePath;
 
-    public IdleState(StateMachine stateMachine, Joystick joystick, Canvas canvas, CurvePath curvePath)
+    public MoveState(StateMachine stateMachine, Joystick joystick, Canvas canvas, CurvePath curvePath)
     {
         _stateMachine = stateMachine;
         _joystick = joystick;
@@ -20,54 +20,59 @@ public class IdleState : State
 
     public void Enter()
     {
-        
+        _canvas.enabled = false;
+        _curvePath.IsReadyToMove = false;
     }
 
     public void Exit()
     {
-
+        _curvePath.ParametrT = 0.0f;
+        _curvePath.IsReadyToMove = true;
     }
 
     public void UpdateState()
     {
-        
+
     }
 
     public void FixedUpdateState()
     {
-
+        Move();
     }
 
     public void OnMouseEnter()
     {
-        _canvas.enabled = true;
+        
     }
 
     public void OnMouseOver(Vector3 mousePosition)
     {
-        _joystick.transform.position = mousePosition;
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out hit) && hit.collider.tag == "Object")
-        {
-            _curvePath.Trajectory.position = hit.transform.position;
-        }
+        
     }
 
     public void OnMouseExit()
     {
-        _canvas.enabled = false;
+        
     }
 
     public void OnMouseDown()
     {
-        _stateMachine.EnterIn<ZoomState>();
+        
     }
 
     public void OnMouseUp()
     {
         
     }
-}
 
+    private void Move()
+    {
+        if (_curvePath.ParametrT < 1.0f)
+        {
+            _curvePath.Move();
+            _curvePath.ParametrT += 1.0f * Time.deltaTime;
+        }
+        else if(_curvePath.ParametrT >= 1.0f)
+            _stateMachine.EnterIn<IdleState>();
+    }
+}
