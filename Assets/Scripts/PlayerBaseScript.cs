@@ -1,11 +1,12 @@
+using System.Collections;
 using System.Collections.Generic;
-using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
     private StateMachine _stateMachine;
-    private CurvePath _curvePath;
+
+    [SerializeField] private CurvePath _curvePath;
 
     [SerializeField] private Camera _camera;
     [SerializeField] private Canvas _canvas;
@@ -14,8 +15,7 @@ public class PlayerScript : MonoBehaviour
     private void Start() 
     {
         _canvas.enabled = false;
-        _curvePath = GetComponent<CurvePath>();
-        _stateMachine = new StateMachine(_curvePath, _canvas, _joystick, _camera);
+        _stateMachine = new StateMachine(_curvePath, _canvas, _joystick, _camera, this.transform);
         _stateMachine.EnterIn<IdleState>();
     }
 
@@ -54,11 +54,9 @@ public class PlayerScript : MonoBehaviour
         _stateMachine.OnMouseUp();
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision other)
     {
-        if (collision.gameObject.tag == "Enemy")
-        {
-            Debug.Log("Triggered");
-        }
+        _stateMachine.EnterIn<IdleState>();
+        
     }
 }

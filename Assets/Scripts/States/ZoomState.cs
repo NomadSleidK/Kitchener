@@ -12,8 +12,6 @@ public class ZoomState : State
     private Joystick _joystick;
     private CurvePath _curvePath;
 
-    private Transform _trajectory;
-
     private float _dirX;
     private float _dirY;
 
@@ -24,7 +22,6 @@ public class ZoomState : State
         _camera = camera;
         _joystick = joystick;
         _curvePath = curvePath;
-        _trajectory = _curvePath.Trajectory;
     }
 
     public void Enter()
@@ -41,6 +38,8 @@ public class ZoomState : State
         {
             _canvas.enabled = false;
         }
+
+        _curvePath.ClearLine();
     }
 
     public void UpdateState()
@@ -50,9 +49,10 @@ public class ZoomState : State
 
     public void FixedUpdateState()
     {
+        _curvePath.DrawCubicBezierCurve();
         DeterminingRange(); //переустановка целевой позиции
-        _curvePath.HightPointPosition(); //установка позиции верхних пределов 
-        TrajectoryRotation(); //пращение траектории
+        _curvePath.EditHightPointPosition(); //установка позиции верхних пределов 
+        TrajectoryRotation(); //вращение траектории
     }
 
     public void OnMouseEnter()
@@ -75,9 +75,9 @@ public class ZoomState : State
         //throw new System.NotImplementedException();
     }
 
-    public void OnMouseUp()
+    public void OnMouseUp() //когда мышь отпустили
     {
-        HowLongExitRange();
+        HowLengthRange();
     }
 
     private void TrajectoryRotation()
@@ -89,27 +89,30 @@ public class ZoomState : State
         if (direction != Vector3.zero)
         {
             Quaternion rotation = Quaternion.LookRotation(direction);
-            _trajectory.rotation = Quaternion.Lerp(_trajectory.rotation, rotation, 0.5f);
+            _curvePath.CurveRotating(rotation);
         }
     }
 
-    private void HowLongExitRange()
+    private void HowLengthRange() //определение состояний от степени натяжения джойстика
     {
         _dirX = _joystick.Horizontal;
         _dirY = _joystick.Vertical;
-        if(Mathf.Clamp01(new Vector2(_dirX, _dirY).magnitude) >= 0.2f && _curvePath.IsReadyToMove == true)
+
+        if(Mathf.Clamp01(new Vector2(_dirX, _dirY).magnitude) >= 0.1f)
         {
             _stateMachine.EnterIn<MoveState>();
         }
         else
             _stateMachine.EnterIn<IdleState>();
+
         _canvas.enabled = false;
     }
 
-    private void DeterminingRange()
+    private void DeterminingRange() //изменение длины траектории
     {
         _dirX = _joystick.Horizontal;
         _dirY = _joystick.Vertical;
-        _curvePath.SetNewTargetPosition(Mathf.Clamp01(new Vector2(_dirX, _dirY).magnitude));
+
+        _curvePath.DeterminingRange(Mathf.Clamp01(new Vector2(_dirX, _dirY).magnitude));
     }
 }

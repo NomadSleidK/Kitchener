@@ -43,15 +43,16 @@ public class IdleState : State
         _canvas.enabled = true;
     }
 
-    public void OnMouseOver(Vector3 mousePosition)
+    public void OnMouseOver(Vector3 mousePosition) //если навёлся на объект, то задать начало траектории в начале объекта
     {
         _joystick.transform.position = mousePosition;
+
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out hit) && hit.collider.tag == "Object")
+        if (Physics.Raycast(ray, out hit) && hit.collider.tag == "Object" && _curvePath.IsReadyToMove == true)
         {
-            _curvePath.Trajectory.position = hit.transform.position;
+            _curvePath.SetNewPosition(hit.transform);
         }
     }
 
@@ -62,7 +63,8 @@ public class IdleState : State
 
     public void OnMouseDown()
     {
-        _stateMachine.EnterIn<ZoomState>();
+        if(_curvePath.IsReadyToMove == true)
+            _stateMachine.EnterIn<ZoomState>();
     }
 
     public void OnMouseUp()

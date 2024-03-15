@@ -6,16 +6,19 @@ public class MoveState : State
 {
     protected readonly StateMachine _stateMachine;
 
-    private Joystick _joystick;
     private Canvas _canvas;
     private CurvePath _curvePath;
+    private Transform _objectTransform;
 
-    public MoveState(StateMachine stateMachine, Joystick joystick, Canvas canvas, CurvePath curvePath)
+    private float _parameterT;
+
+    public MoveState(StateMachine stateMachine, Canvas canvas, CurvePath curvePath, Transform objectTransform)
     {
         _stateMachine = stateMachine;
-        _joystick = joystick;
         _canvas = canvas;
         _curvePath = curvePath;
+        _objectTransform = objectTransform;
+        _parameterT = 0.0f;
     }
 
     public void Enter()
@@ -26,7 +29,7 @@ public class MoveState : State
 
     public void Exit()
     {
-        _curvePath.ParametrT = 0.0f;
+        _parameterT = 0.0f;
         _curvePath.IsReadyToMove = true;
     }
 
@@ -37,7 +40,7 @@ public class MoveState : State
 
     public void FixedUpdateState()
     {
-        Move();
+        MoveAlongCurve();
     }
 
     public void OnMouseEnter()
@@ -65,14 +68,14 @@ public class MoveState : State
         
     }
 
-    private void Move()
+    private void MoveAlongCurve()
     {
-        if (_curvePath.ParametrT < 1.0f)
+        if (_parameterT < 1.0f)
         {
-            _curvePath.Move();
-            _curvePath.ParametrT += 1.0f * Time.deltaTime;
+            _objectTransform.position = _curvePath.GetPositionOnCurve(_parameterT);
+            _parameterT += 1.2f * Time.deltaTime;
         }
-        else if(_curvePath.ParametrT >= 1.0f)
+        else if(_parameterT >= 1.0f)
             _stateMachine.EnterIn<IdleState>();
     }
 }

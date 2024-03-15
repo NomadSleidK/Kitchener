@@ -12,20 +12,21 @@ public class StateMachine
     private Canvas _canvas;
     private Joystick _joystick;
     private Camera _camera;
-    private Transform _transform;
+    private Transform _objectTransform;
 
-    public StateMachine(CurvePath curvePath, Canvas canvas, Joystick joystick, Camera camera)
+    public StateMachine(CurvePath curvePath, Canvas canvas, Joystick joystick, Camera camera, Transform objectTransform)
     {
         _curvePath = curvePath;
         _canvas = canvas;
         _joystick = joystick;
         _camera = camera;
+        _objectTransform = objectTransform;
 
         _states = new Dictionary<Type, State>()
         {
             [typeof(IdleState)] = new IdleState(this, _joystick, _canvas, _curvePath),
             [typeof(ZoomState)] = new ZoomState(this, _joystick, _canvas, _camera, _curvePath),
-            [typeof(MoveState)] = new MoveState(this, _joystick, _canvas, _curvePath),
+            [typeof(MoveState)] = new MoveState(this, _canvas, _curvePath, _objectTransform),
         };
     }
 
