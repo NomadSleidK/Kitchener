@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerScript : MonoBehaviour
+public class ObjectScript : MonoBehaviour
 {
     private StateMachine _stateMachine;
 

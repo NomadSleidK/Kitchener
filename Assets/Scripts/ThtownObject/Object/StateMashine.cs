@@ -25,7 +25,7 @@ public class StateMachine
         _states = new Dictionary<Type, State>()
         {
             [typeof(IdleState)] = new IdleState(this, _joystick, _canvas, _curvePath),
-            [typeof(ZoomState)] = new ZoomState(this, _joystick, _canvas, _camera, _curvePath),
+            [typeof(ZoomState)] = new ZoomState(this, _joystick, _canvas, _camera, _curvePath, _objectTransform),
             [typeof(MoveState)] = new MoveState(this, _canvas, _curvePath, _objectTransform),
         };
     }

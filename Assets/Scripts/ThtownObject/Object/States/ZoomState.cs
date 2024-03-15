@@ -11,17 +11,19 @@ public class ZoomState : State
     private Camera _camera;
     private Joystick _joystick;
     private CurvePath _curvePath;
+    private Transform _objectTransform;
 
     private float _dirX;
     private float _dirY;
 
-    public ZoomState(StateMachine stateMachine, Joystick joystick, Canvas canvas, Camera camera, CurvePath curvePath)
+    public ZoomState(StateMachine stateMachine, Joystick joystick, Canvas canvas, Camera camera, CurvePath curvePath, Transform objectTransform)
     {
         _stateMachine = stateMachine;
         _canvas = canvas;
         _camera = camera;
         _joystick = joystick;
         _curvePath = curvePath;
+        _objectTransform = objectTransform;
     }
 
     public void Enter()
@@ -90,6 +92,7 @@ public class ZoomState : State
         {
             Quaternion rotation = Quaternion.LookRotation(direction);
             _curvePath.CurveRotating(rotation);
+            _objectTransform.rotation = Quaternion.Lerp(_objectTransform.rotation, rotation, 0.5f); ;
         }
     }
 
