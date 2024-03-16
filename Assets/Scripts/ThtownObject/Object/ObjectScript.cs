@@ -54,9 +54,9 @@ public class ObjectScript : MonoBehaviour
         _stateMachine.OnMouseUp();
     }
 
-    private void OnCollisionEnter(Collision other)
+    private void OnCollisionEnter(Collision collision)
     {
-        _stateMachine.EnterIn<IdleState>();
-        
+        if (transform.GetComponent<Rigidbody>().velocity != Vector3.zero)
+            _stateMachine.EnterIn<IdleState>();
     }
 }

@@ -20,7 +20,7 @@ public class IdleState : State
 
     public void Enter()
     {
-        
+        _curvePath.IsReadyToMove = true;
     }
 
     public void Exit()
@@ -40,25 +40,35 @@ public class IdleState : State
 
     public void OnMouseEnter()
     {
-        _canvas.enabled = true;
+        if (_curvePath.IsReadyToMove == true)
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hit) && hit.collider.tag == "Object")
+                _canvas.enabled = true;
+        }
     }
 
     public void OnMouseOver(Vector3 mousePosition) //если навёлся на объект, то задать начало траектории в начале объекта
     {
-        _joystick.transform.position = mousePosition;
-
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out hit) && hit.collider.tag == "Object" && _curvePath.IsReadyToMove == true)
+        if (_curvePath.IsReadyToMove == true)
         {
-            _curvePath.SetNewPosition(hit.transform);
-        }
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hit) && hit.collider.tag == "Object")
+            {
+                _curvePath.SetNewPosition(hit.transform);
+                _joystick.transform.position = mousePosition;
+            }
+        }           
     }
 
     public void OnMouseExit()
     {
-        _canvas.enabled = false;
+        if (_curvePath.IsReadyToMove == true)
+            _canvas.enabled = false;
     }
 
     public void OnMouseDown()

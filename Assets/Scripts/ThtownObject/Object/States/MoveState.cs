@@ -24,7 +24,6 @@ public class MoveState : State
     public void Enter()
     {
         _canvas.enabled = false;
-        _curvePath.IsReadyToMove = false;
     }
 
     public void Exit()

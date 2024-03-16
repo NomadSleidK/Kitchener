@@ -6,7 +6,6 @@ public class StateMachine
 {
     private Dictionary<Type, State> _states;
     private State _currentState;
-    public State CurrentState => _currentState;
 
     private CurvePath _curvePath;
     private Canvas _canvas;

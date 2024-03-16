@@ -28,7 +28,7 @@ public class ZoomState : State
 
     public void Enter()
     {
-        
+        _curvePath.IsReadyToMove = false;
     }
 
     public void Exit()
@@ -59,22 +59,22 @@ public class ZoomState : State
 
     public void OnMouseEnter()
     {
-        //throw new System.NotImplementedException();
+        
     }
 
     public void OnMouseOver(Vector3 mousePosition)
     {
-        //throw new System.NotImplementedException();
+        
     }
 
     public void OnMouseExit()
     {
-        //throw new System.NotImplementedException();
+
     }
 
     public void OnMouseDown()
     {
-        //throw new System.NotImplementedException();
+        
     }
 
     public void OnMouseUp() //когда мышь отпустили
@@ -100,13 +100,14 @@ public class ZoomState : State
     {
         _dirX = _joystick.Horizontal;
         _dirY = _joystick.Vertical;
-
-        if(Mathf.Clamp01(new Vector2(_dirX, _dirY).magnitude) >= 0.1f)
+        if(Mathf.Clamp01(new Vector2(_joystick.transform.position.x, _joystick.transform.position.z).magnitude) - Mathf.Clamp01(new Vector2(_dirX, _dirY).magnitude) > 1.0f)
+        {
+            _stateMachine.EnterIn<IdleState>();
+        }
+        else if (Mathf.Clamp01(new Vector2(_dirX, _dirY).magnitude) >= 0.1f)
         {
             _stateMachine.EnterIn<MoveState>();
         }
-        else
-            _stateMachine.EnterIn<IdleState>();
 
         _canvas.enabled = false;
     }
