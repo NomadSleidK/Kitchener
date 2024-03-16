@@ -108,6 +108,8 @@ public class ZoomState : State
         {
             _stateMachine.EnterIn<MoveState>();
         }
+        else
+            _stateMachine.EnterIn<IdleState>();
 
         _canvas.enabled = false;
     }
