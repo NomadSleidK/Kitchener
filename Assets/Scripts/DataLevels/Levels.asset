@@ -19,6 +19,3 @@ MonoBehaviour:
   - _sceneName: Level2
     IsLevelOpen: 0
     _result: 0
-  - _sceneName: Level3
-    IsLevelOpen: 0
-    _result: 0

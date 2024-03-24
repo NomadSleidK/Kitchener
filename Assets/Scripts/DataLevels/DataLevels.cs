@@ -13,7 +13,7 @@ public class DataLevels : ScriptableObject
         public string SceneName => _sceneName;
 
         public bool IsLevelOpen;
-        [SerializeField] private int _result;
+        private int _result;
         public int Result
         {
             get
@@ -22,21 +22,29 @@ public class DataLevels : ScriptableObject
             }
             set
             {
-                if (value > 3)
-                    _result = 3;
-                else if (value < 1)
-                    _result = 1;
-                else
-                    _result = value;
+                _result = value;
+                Debug.Log(value);
+
+                PlayerPrefs.SetInt(_sceneName, _result);
             }
         }
     }
     [SerializeField] private Level[] _levels;
     public Level[] GetLevel => _levels;
 
-    public void SaveLevelResult(int sceneNomber, int result)
+    public void DataUpdate()
     {
-        PlayerPrefs.SetInt(GetLevel[sceneNomber].SceneName, result);
-        PlayerPrefs.Save();
+        foreach (Level level in GetLevel)
+        {
+            if (!PlayerPrefs.HasKey(level.SceneName))
+                PlayerPrefs.SetInt(level.SceneName, -1);
+
+            level.Result = PlayerPrefs.GetInt(level.SceneName);
+        }
+    }
+
+    public void SaveLevelResult(int result)
+    {
+        PlayerPrefs.SetInt(GetLevel[PlayerPrefs.GetInt("activeScene")].SceneName, result);
     }
 }
