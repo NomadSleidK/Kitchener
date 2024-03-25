@@ -18,7 +18,7 @@ public class LevelIcon : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        PlayerPrefs.SetInt("activeScene", _sceneNumber);
+        _dataLevels.ActiveScene = _sceneNumber;
         SceneManager.LoadScene(_sceneName);
     }
 

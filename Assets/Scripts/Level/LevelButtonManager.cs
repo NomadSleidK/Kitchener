@@ -15,7 +15,7 @@ public class LevelButtonManager : MonoBehaviour
         if (_settingsScreen.activeInHierarchy)
             _settingsScreen.SetActive(false);
 
-        _sceneNumber = PlayerPrefs.GetInt("activeScene");
+        _sceneNumber = _dataLevels.ActiveScene;
     }
     public void MenuButtonClick()
     {
@@ -26,6 +26,7 @@ public class LevelButtonManager : MonoBehaviour
     {
         if (_settingsScreen.activeInHierarchy)
             _settingsScreen.SetActive(false);
+
         else if(!_settingsScreen.activeInHierarchy)
             _settingsScreen.SetActive(true);
 
@@ -40,12 +41,11 @@ public class LevelButtonManager : MonoBehaviour
     {
         if (_sceneNumber + 1 > _dataLevels.GetLevel.Length - 1)
         {
-            PlayerPrefs.SetInt("activeScene", _sceneNumber);
             SceneManager.LoadScene("MenuScene");
         }
         else
         {
-            PlayerPrefs.SetInt("activeScene", _sceneNumber + 1);
+            _dataLevels.ActiveScene++;
             SceneManager.LoadScene(_dataLevels.GetLevel[_sceneNumber + 1].SceneName);
         }
         

@@ -6,13 +6,25 @@ using UnityEngine.SceneManagement;
 [CreateAssetMenu(menuName = "ScriptableObject/DataLevels", order = 51)]
 public class DataLevels : ScriptableObject
 {
+    public int ActiveScene
+    {
+        get
+        {
+            return PlayerPrefs.GetInt("activeScene");
+        }
+        set
+        {
+            if (!(value < 0))
+                PlayerPrefs.SetInt("activeScene", value);
+        }
+    }
+
     [System.Serializable]
     public class Level
     {
         [SerializeField] private string _sceneName;
         public string SceneName => _sceneName;
 
-        public bool IsLevelOpen;
         private int _result;
         public int Result
         {
@@ -23,10 +35,13 @@ public class DataLevels : ScriptableObject
             set
             {
                 _result = value;
-                Debug.Log(value);
-
-                PlayerPrefs.SetInt(_sceneName, _result);
+                SaveResult(SceneName, _result);
             }
+        }
+
+        public void SaveResult(string name, int result)
+        {
+            PlayerPrefs.SetInt(name, result);
         }
     }
     [SerializeField] private Level[] _levels;
@@ -43,8 +58,8 @@ public class DataLevels : ScriptableObject
         }
     }
 
-    public void SaveLevelResult(int result)
+    public void SaveLevelResult(int value)
     {
-        PlayerPrefs.SetInt(GetLevel[PlayerPrefs.GetInt("activeScene")].SceneName, result);
+        GetLevel[PlayerPrefs.GetInt("activeScene")].Result = value;
     }
 }
