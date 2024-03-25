@@ -18,12 +18,28 @@ public class LevelIcon : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        _dataLevels.ActiveScene = _sceneNumber;
-        SceneManager.LoadScene(_sceneName);
+        if (_dataLevels.GetLevel[_sceneNumber].IsLevelOpened)
+        {
+            _dataLevels.ActiveScene = _sceneNumber;
+            SceneManager.LoadScene(_sceneName);
+        }
+        else
+        {
+            Debug.Log("Заблокировано");
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log(_dataLevels.GetLevel[_sceneNumber].Result);
+        /*
+        if (_dataLevels.GetLevel[_sceneNumber].IsLevelOpened)
+        {
+            Debug.Log("Рейтинг уровня " + _dataLevels.GetLevel[_sceneNumber].Result);
+        }
+        else
+        {
+            Debug.Log("Заблокировано");
+        }
+        */
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static DataLevels;
 
 [CreateAssetMenu(menuName = "ScriptableObject/DataLevels", order = 51)]
 public class DataLevels : ScriptableObject
@@ -25,7 +26,7 @@ public class DataLevels : ScriptableObject
         [SerializeField] private string _sceneName;
         public string SceneName => _sceneName;
 
-        private bool _isLevelOpened;
+        public bool IsLevelOpened;
 
         private int _result;
         public int Result
@@ -36,15 +37,13 @@ public class DataLevels : ScriptableObject
             }
             set
             {
-                if(value > _result && value <= 3)
-                    _result = value;
-                SaveResult(SceneName, _result);
+                _result = value;
+                if (_result != -1)
+                    IsLevelOpened = true;
+                else
+                    IsLevelOpened = false;
+                PlayerPrefs.SetInt(_sceneName, _result);
             }
-        }
-
-        public void SaveResult(string name, int result)
-        {
-            PlayerPrefs.SetInt(name, result);
         }
     }
     [SerializeField] private Level[] _levels;
@@ -52,25 +51,25 @@ public class DataLevels : ScriptableObject
 
     public void DataUpdate()
     {
-        foreach (Level level in GetLevel)
-        {
-            if (!PlayerPrefs.HasKey(level.SceneName))
-                PlayerPrefs.SetInt(level.SceneName, 0);
-
-            level.Result = PlayerPrefs.GetInt(level.SceneName);
-        }
+        //PlayerPrefs.DeleteAll();
 
         foreach (Level level in GetLevel)
         {
             if (!PlayerPrefs.HasKey(level.SceneName))
-                PlayerPrefs.SetInt(level.SceneName, 0);
+                PlayerPrefs.SetInt(level.SceneName, -1);
 
             level.Result = PlayerPrefs.GetInt(level.SceneName);
         }
+    
+        if (GetLevel[0].Result == -1)
+            GetLevel[0].Result = 0;
     }
 
     public void SaveLevelResult(int value)
     {
         GetLevel[PlayerPrefs.GetInt("activeScene")].Result = value;
+
+        if (PlayerPrefs.GetInt("activeScene") + 1 <= GetLevel.Length - 1)
+            GetLevel[PlayerPrefs.GetInt("activeScene") + 1].Result = 0;
     }
 }

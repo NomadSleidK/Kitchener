@@ -14,8 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _levels:
   - _sceneName: Level1
-    IsLevelOpen: 0
-    _result: 0
+    IsLevelOpened: 1
   - _sceneName: Level2
-    IsLevelOpen: 0
-    _result: 0
+    IsLevelOpened: 1
+  - _sceneName: Level3
+    IsLevelOpened: 0
+  - _sceneName: Level4
+    IsLevelOpened: 0
+  - _sceneName: Level5
+    IsLevelOpened: 0
