@@ -7,7 +7,7 @@ using static DataLevels;
 [CreateAssetMenu(menuName = "ScriptableObject/DataLevels", order = 51)]
 public class DataLevels : ScriptableObject
 {
-    public int ActiveSceneNomber
+    public int ActiveSceneNumber
     {
         get
         {
@@ -43,6 +43,7 @@ public class DataLevels : ScriptableObject
                 else
                     IsLevelOpened = false;
                 PlayerPrefs.SetInt(_sceneName, _result);
+                PlayerPrefs.Save();
             }
         }
     }
@@ -63,14 +64,16 @@ public class DataLevels : ScriptableObject
     
         if (GetLevel[0].Result == -1)
             GetLevel[0].Result = 0;
+
+        PlayerPrefs.Save();
     }
 
-    public void SaveLevelResult(int newRezult)
+    public void SaveLevelResult(int newResult)
     {
         int oldThisLevelResult = GetLevel[PlayerPrefs.GetInt("activeScene")].Result;
 
-        if (newRezult > oldThisLevelResult && newRezult <= 3)
-            GetLevel[PlayerPrefs.GetInt("activeScene")].Result = newRezult;
+        if (newResult > oldThisLevelResult && newResult <= 3)
+            GetLevel[PlayerPrefs.GetInt("activeScene")].Result = newResult;
 
         if (PlayerPrefs.GetInt("activeScene") + 1 <= GetLevel.Length - 1)
         {
@@ -79,5 +82,7 @@ public class DataLevels : ScriptableObject
             if (nextLevelResult == -1)
                 GetLevel[PlayerPrefs.GetInt("activeScene") + 1].Result = 0;
         }
+
+        PlayerPrefs.Save();
     }
 }

@@ -23,7 +23,7 @@ public class LevelIcon : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
     {
         if (_dataLevels.GetLevel[_sceneNumber].IsLevelOpened)
         {
-            _dataLevels.ActiveSceneNomber = _sceneNumber;
+            _dataLevels.ActiveSceneNumber = _sceneNumber;
             SceneManager.LoadScene(_sceneName);
         }
         else
