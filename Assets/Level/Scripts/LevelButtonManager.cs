@@ -15,7 +15,7 @@ public class LevelButtonManager : MonoBehaviour
         if (_settingsScreen.activeInHierarchy)
             _settingsScreen.SetActive(false);
 
-        _sceneNumber = _dataLevels.ActiveScene;
+        _sceneNumber = _dataLevels.ActiveSceneNomber;
     }
     public void MenuButtonClick()
     {
@@ -45,7 +45,7 @@ public class LevelButtonManager : MonoBehaviour
         }
         else
         {
-            _dataLevels.ActiveScene++;
+            _dataLevels.ActiveSceneNomber++;
             SceneManager.LoadScene(_dataLevels.GetLevel[_sceneNumber + 1].SceneName);
         }
         

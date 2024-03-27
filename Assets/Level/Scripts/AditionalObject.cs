@@ -9,7 +9,6 @@ public class AdditionalObject : MonoBehaviour
     private void Start()
     {
         _triggerZone = GameObject.FindGameObjectWithTag("TriggerZone").GetComponent<TriggerZone>();
-        Debug.Log(_triggerZone == null);
     }
 
     void OnTriggerEnter(Collider other)

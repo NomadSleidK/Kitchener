@@ -33,7 +33,10 @@ public class TriggerZone : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         if (other.transform.tag == "Object" && _objectInZoneCount < 3)
+        {
             _objectInZoneCount++;
+            other.gameObject.SetActive(false);
+        }
 
         if (_objectInZoneCount == 3)
         {
