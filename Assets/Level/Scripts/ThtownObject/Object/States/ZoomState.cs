@@ -104,7 +104,7 @@ public class ZoomState : State
         {
             _stateMachine.EnterIn<IdleState>();
         }
-        else if (Mathf.Clamp01(new Vector2(_dirX, _dirY).magnitude) >= 0.1f)
+        else if (Mathf.Clamp01(new Vector2(_dirX, _dirY).magnitude) >= 0.05f)
         {
             _stateMachine.EnterIn<MoveState>();
         }
