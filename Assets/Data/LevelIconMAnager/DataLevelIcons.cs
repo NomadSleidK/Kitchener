@@ -23,7 +23,7 @@ public class DataLevelIcons: ScriptableObject
 
     public void SetLevelSprite(Image imageLevelIcon, int levelResult)
     {
-        switch(levelResult)
+        switch (levelResult)
         {
             case -1:
                 imageLevelIcon.sprite = LockLevel;
@@ -39,6 +39,31 @@ public class DataLevelIcons: ScriptableObject
                 break;
             case 3:
                 imageLevelIcon.sprite = ResultThree;
+                break;
+        }
+    }
+
+    [SerializeField] private Sprite _levelResultImage1;
+    public Sprite LevelResultImage1 => _levelResultImage1;
+
+    [SerializeField] private Sprite _levelResultImage2;
+    public Sprite LevelResultImage2 => _levelResultImage2;
+
+    [SerializeField] private Sprite _levelResultImage3;
+    public Sprite LevelResultImage3 => _levelResultImage3;
+
+    public void SetLevelResultImage(Image imageLevelIcon, int levelResult)
+    {
+        switch (levelResult)
+        {
+            case 1:
+                imageLevelIcon.sprite = LevelResultImage1;
+                break;
+            case 2:
+                imageLevelIcon.sprite = LevelResultImage2;
+                break;
+            case 3:
+                imageLevelIcon.sprite = LevelResultImage3;
                 break;
         }
     }

@@ -17,3 +17,6 @@ MonoBehaviour:
   _resultOne: {fileID: 21300000, guid: 3fe703f95ab33469c8cc5585bcfd1e6f, type: 3}
   _resultTwo: {fileID: 21300000, guid: c69af3261a723453fa0caceaf455d375, type: 3}
   _resultThree: {fileID: 21300000, guid: 466629a777f0846d28fd87fc29e2564f, type: 3}
+  _levelResultImage1: {fileID: 21300000, guid: ff02b2218d663b846abf026b1c3c9cf2, type: 3}
+  _levelResultImage2: {fileID: 21300000, guid: 715f187e07d7215419978b09b397ae16, type: 3}
+  _levelResultImage3: {fileID: 21300000, guid: 215ad18373e24f14087baef8916b4aea, type: 3}

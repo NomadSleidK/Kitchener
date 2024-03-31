@@ -113,9 +113,9 @@ RectTransform:
   - {fileID: 4546227983232681567}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -960, y: -540}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &989900480040966139
@@ -169,4 +169,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dataLevels: {fileID: 11400000, guid: e1cc179b6876e498f824e40da55206cb, type: 2}
-  _sceneNomber: 0
+  _dataLevelIcons: {fileID: 11400000, guid: 9a9b1b9656f9a4291a30d26e2afa9a0e, type: 2}
+  _sceneNumber: 0

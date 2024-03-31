@@ -30,6 +30,7 @@ public class CurvePath : MonoBehaviour
     {
         lineRenderer = GetComponent<LineRenderer>();
         IsReadyToMove = true;
+        ClearLine();
     }
 
   

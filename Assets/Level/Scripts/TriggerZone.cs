@@ -6,6 +6,7 @@ using UnityEngine;
 public class TriggerZone : MonoBehaviour
 {
     [SerializeField] private DataLevels _dataLevels;
+    [SerializeField] ParticleSystem _waterSplash;
 
     private GameObject _screenResult;
     private int _objectInZoneCount;
@@ -36,6 +37,7 @@ public class TriggerZone : MonoBehaviour
         {
             _objectInZoneCount++;
             other.gameObject.SetActive(false);
+            _waterSplash.Play();
         }
 
         if (_objectInZoneCount == 3)
